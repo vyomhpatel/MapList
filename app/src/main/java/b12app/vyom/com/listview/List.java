@@ -10,12 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class List extends AppCompatActivity {
 
     String[] countries = {"India","United States","United Kingdom","China","Nepal","Japan"};
 
-    int[] images ={R.drawable.india,R.drawable.usa,R.drawable.uk,R.drawable.china,R.drawable.nepal,R.drawable.japan} ;
+    Integer[] images ={R.drawable.india,R.drawable.usa,R.drawable.uk,R.drawable.china,R.drawable.nepal,R.drawable.japan} ;
     ListView listView;
+    MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +32,25 @@ public class List extends AppCompatActivity {
 
 
 //            listView.setAdapter(arrayAdapter);
+        ArrayList<String> countries_list = new ArrayList<>(Arrays.asList(countries));
+        ArrayList<Integer> images_list = new ArrayList<>(Arrays.asList(images));
 
-
-        MyAdapter myAdapter = new MyAdapter(images,countries,List.this);
+        myAdapter = new MyAdapter(images_list,countries_list,List.this);
         listView.setAdapter(myAdapter);
+
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                myAdapter.myCountries.remove(i);
+                myAdapter.myImages.remove(i);
+                myAdapter.notifyDataSetChanged();
+
+                return true;
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
